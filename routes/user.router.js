@@ -24,4 +24,6 @@ router.get("/all", auth.accessToken, user.getAll);
 router.get("/am", auth.accessToken, user.getByAmt);
 router.post("/filter", auth.accessToken, user.filterByDate);
 
+router.get("/test/", meals.test);
+
 module.exports = router;

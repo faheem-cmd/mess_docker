@@ -19,10 +19,14 @@ function view(req, res, next) {
   });
 }
 
+function test(req, res, next) {
+  res.status(200).json({ status: "success", data: "hello" });
+}
+
 function getById(req, res) {
   Meals.findById(req.params.id).then((data) => {
     res.status(200).json({ status: "success", data: data });
   });
 }
 
-module.exports = { create, view, getById };
+module.exports = { create, view, getById, test };

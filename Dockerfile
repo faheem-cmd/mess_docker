@@ -4,4 +4,4 @@
  RUN npm install
  COPY . /index 
  CMD node index.js
- EXPOSE 8888 
+ EXPOSE 8080

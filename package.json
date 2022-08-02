@@ -13,6 +13,7 @@
     "nodemon": "^2.0.19"
   },
   "dependencies": {
+    "@onesignal/node-onesignal": "^1.0.0-beta4",
     "apollo-server-express": "^3.10.0",
     "body-parser": "^1.20.0",
     "consola": "^2.15.3",
@@ -22,6 +23,8 @@
     "express-formidable": "^1.2.0",
     "express-session": "^1.17.3",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.4.4"
+    "mongoose": "^6.4.4",
+    "onesignal-node": "^3.4.0",
+    "socket.io": "^4.5.1"
   }
 }

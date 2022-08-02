@@ -7,6 +7,8 @@ require("dotenv").config();
 const router = require("./routes/user.router");
 const { success, error } = require("consola");
 app.use("/", router);
+const http = require("http");
+const socketio = require("socket.io");
 //MongoDB connection
 const dbName = "mess";
 const dbUrl = process.env.DB_URL || `mongodb://0.0.0.0:27017/${dbName}`;

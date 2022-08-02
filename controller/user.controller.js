@@ -1,6 +1,34 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/user.models");
 const Amount = require("../models/amount.models");
+
+const OneSignal = require("onesignal-node");
+const client = new OneSignal.Client(
+  "a1c86044-240f-4885-ae93-f5bc754cb589",
+  "OWY0MWU2OTUtZDg1MC00NzVkLWJiMDMtNGVjYTNkNmM2NzJh"
+);
+
+function sendPushNotification(token, text) {
+  return new Promise((res, rej) => {
+    const notification = {
+      contents: {
+        en: "faheem hello",
+      },
+      // include_player_ids: ["d803026f-a32c-4bcc-b77f-2bf6383af22c"],
+      included_segments: ["Subscribed Users"],
+    };
+
+    return client
+      .createNotification(notification)
+      .then((response) => {
+        return res(response);
+      })
+      .catch((e) => {
+        return rej(e);
+      });
+  });
+}
+
 const signup = async (req, res) => {
   const validateEmail = (email) => {
     return String(email)
@@ -139,9 +167,10 @@ function users(req, res, next) {
         phone: i.phone,
       };
     });
-
+    sendPushNotification();
     console.log(newData);
-    res.status(200).json({ status: "success", data: newData });
+    sendPushNotification,
+      res.status(200).json({ status: "success", data: newData });
   });
 }
 
@@ -206,6 +235,12 @@ const filterByDate = (req, res) => {
     }
   });
 };
+
+// function getById(req, res) {
+//   Meals.findById(req.params.id).then((data) => {
+//     res.status(200).json({ status: "success", data: data });
+//   });
+// }
 
 module.exports = {
   signup,

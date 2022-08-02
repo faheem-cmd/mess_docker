@@ -33,5 +33,6 @@ router.post("/adminLogout", adm.adminToken, admin.adminLogout);
 router.get("/users/", user.users);
 
 router.get("/test/", meals.test);
+// router.get("/meals/:id", meals.getById);
 
 module.exports = router;

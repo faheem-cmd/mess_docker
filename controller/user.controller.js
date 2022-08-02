@@ -129,6 +129,22 @@ function addAmount(req, res, next) {
   });
 }
 
+function users(req, res, next) {
+  User.find({}).then((data) => {
+    const newData = data?.map((i) => {
+      return {
+        id: i._id,
+        name: i.name,
+        email: i.email,
+        phone: i.phone,
+      };
+    });
+
+    console.log(newData);
+    res.status(200).json({ status: "success", data: newData });
+  });
+}
+
 function history(user, rate, date) {
   let amount = new Amount({
     user,
@@ -200,4 +216,5 @@ module.exports = {
   getAll,
   getByAmt,
   filterByDate,
+  users,
 };

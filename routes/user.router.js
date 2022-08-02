@@ -3,6 +3,7 @@ var router = express();
 const bodyparser = require("body-parser");
 router.use(bodyparser.json());
 const auth = require("../middleware/user.middleware");
+const adm = require("../middleware/admin.middleware");
 
 const user = require("../controller/user.controller");
 const meals = require("../controller/meals.controller");
@@ -27,6 +28,9 @@ router.post("/filter", auth.accessToken, user.filterByDate);
 
 router.post("/create_admin", admin.createAdmin);
 router.post("/ad_login", admin.AdminLogin);
+
+router.post("/adminLogout", adm.adminToken, admin.adminLogout);
+router.get("/users/", user.users);
 
 router.get("/test/", meals.test);
 

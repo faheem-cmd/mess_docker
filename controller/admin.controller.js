@@ -86,7 +86,29 @@ const AdminLogin = async (req, res) => {
   });
 };
 
+const adminLogout = async (req, res) => {
+  const user_id = req.user.user_data.user_id;
+  const email = req.body.email;
+  const filter = { _id: user_id };
+  Admin.find(filter).then((result) => {
+    const user = result[0];
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    const update = {
+      access_token: "",
+      // refresh_token: "",
+    };
+    Admin.findOneAndUpdate(filter, update, { new: true }).then((result) => {});
+
+    return res
+      .status(200)
+      .json({ status: 200, message: "User logged out successfully" });
+  });
+};
+
 module.exports = {
   createAdmin,
   AdminLogin,
+  adminLogout,
 };

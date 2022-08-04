@@ -1,12 +1,22 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/user.models");
 const Amount = require("../models/amount.models");
-
+const ws = require("ws");
 const OneSignal = require("onesignal-node");
 const client = new OneSignal.Client(
   "a1c86044-240f-4885-ae93-f5bc754cb589",
   "OWY0MWU2OTUtZDg1MC00NzVkLWJiMDMtNGVjYTNkNmM2NzJh"
 );
+
+const Pusher = require("pusher");
+
+const pusher = new Pusher({
+  appId: "1457829",
+  key: "020e37d0408e81b95340",
+  secret: "f410f09ad20e4236e8d3",
+  cluster: "ap2",
+  useTLS: true,
+});
 
 function sendPushNotification(token, text) {
   return new Promise((res, rej) => {
@@ -168,6 +178,15 @@ function users(req, res, next) {
       };
     });
     sendPushNotification();
+    // const client = new ws("ws://localhost:3000");
+
+    // client.on("open", () => {
+    //   // Causes the server to print "Hello"
+    //   client.send("socket connected");
+    // });
+    pusher.trigger("my-channel", "my-event", {
+      message: "hello world",
+    });
     console.log(newData);
     sendPushNotification,
       res.status(200).json({ status: "success", data: newData });

@@ -31,6 +31,8 @@ router.post("/ad_login", admin.AdminLogin);
 
 router.post("/adminLogout", adm.adminToken, admin.adminLogout);
 router.get("/users/", user.users);
+router.post("/ml", meals.ml);
+router.get("/mlm/", meals.mlm);
 
 router.get("/test/", meals.test);
 // router.get("/meals/:id", meals.getById);

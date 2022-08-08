@@ -1,4 +1,26 @@
 const Meals = require("../models/meals.models");
+const Test = require("../models/test.models");
+
+function ml(req, res, next) {
+  console.log("value", req);
+  let name = req.body.name;
+  let date = req.body.date;
+  let address = req.body.address;
+  let test = new Test({
+    name,
+    date,
+    address,
+  });
+  test.save().then((data) => {
+    res.send(data);
+  });
+}
+
+function mlm(req, res, next) {
+  Test.find({}).then((data) => {
+    res.status(200).json({ status: "success", data: data });
+  });
+}
 
 function create(req, res, next) {
   let name = req.body.name;
@@ -29,4 +51,4 @@ function getById(req, res) {
   });
 }
 
-module.exports = { create, view, getById, test };
+module.exports = { create, view, getById, test, ml, mlm };

@@ -50,10 +50,14 @@ const AdminLogin = async (req, res) => {
       };
       // let check = await checkPswd(user.password, password);
       if (email !== user.email) {
-        return res.status(404).json({ message: "Incorrect email" });
+        return res
+          .status(404)
+          .json({ status: "error", message: "Incorrect email" });
       }
       if (password !== user.password) {
-        return res.status(404).json({ message: "Incorrect password" });
+        return res
+          .status(404)
+          .json({ status: "error", message: "Incorrect password" });
       }
       // if (!check) {
       // }

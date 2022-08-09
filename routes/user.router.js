@@ -9,13 +9,11 @@ const user = require("../controller/user.controller");
 const meals = require("../controller/meals.controller");
 const admin = require("../controller/admin.controller");
 
-router.get("/", (req, res) => {
-  res.send("hello");
-});
 router.post("/signup", user.signup);
 router.post("/login/", user.login);
 router.post("/logout", auth.accessToken, user.logout);
 router.get("/profile", auth.accessToken, user.getByUserId);
+router.put("/payment", auth.accessToken, user.payAmount);
 
 router.post("/meals", meals.create);
 router.get("/meals", meals.view);

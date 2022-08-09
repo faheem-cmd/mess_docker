@@ -56,7 +56,8 @@ const signup = async (req, res) => {
       const name = req.body.name;
       const email = req.body.email;
       const phone = req.body.phone;
-      const amount = req.body.amount;
+      const amount = 0;
+      const paid_amount = 0;
       const password = req.body.password;
       let user = new User({
         name,
@@ -64,11 +65,11 @@ const signup = async (req, res) => {
         phone,
         amount,
         password,
+        paid_amount,
       });
       user
         .save()
         .then((data) => {
-          console.log(data);
           res.status(201).json({ message: "Created", data });
         })
         .catch((e) => res.status(500).json({ error: e }));
@@ -147,7 +148,17 @@ const logout = async (req, res) => {
 function getByUserId(req, res) {
   let user_id = req.user.user_data.user_id;
   User.findById(user_id).then((data) => {
-    res.status(200).json({ status: "success", data: data });
+    const newData = {
+      id: data._id,
+      name: data.name,
+      email: data.email,
+      phone: data.phone,
+      amount: data.amount,
+      paid_amount: data.paid_amount,
+      total_amount: data.amount + data.paid_amount,
+    };
+
+    res.status(200).json({ status: "success", data: newData });
   });
 }
 
@@ -175,6 +186,9 @@ function users(req, res, next) {
         name: i.name,
         email: i.email,
         phone: i.phone,
+        amount: i.amount,
+        paid_amount: i.paid_amount,
+        total_amount: i.amount + i.paid_amount,
       };
     });
     sendPushNotification();
@@ -187,7 +201,6 @@ function users(req, res, next) {
     pusher.trigger("my-channel", "my-event", {
       message: "hello world",
     });
-    console.log(newData);
     sendPushNotification,
       res.status(200).json({ status: "success", data: newData });
   });
@@ -201,7 +214,6 @@ function history(user, rate, date) {
   });
   amount.save().then((data) => {
     // res.status(200).json({ status: "success", data: data });
-    console.log(data);
   });
 }
 
@@ -229,7 +241,6 @@ function getByAmt(req, res) {
 }
 
 const filterByDate = (req, res) => {
-  console.log(req.body);
   let user_id = req.user.user_data.user_id;
   Amount.find({ user: user_id }).then((data) => {
     if (data[0].user == user_id) {
@@ -240,7 +251,6 @@ const filterByDate = (req, res) => {
         var date = new Date(a.date);
         return date >= startDate && date <= endDate;
       });
-      console.log(resultProductData, "jjdjd");
 
       res.status(200).json({
         status: "success",
@@ -261,6 +271,32 @@ const filterByDate = (req, res) => {
 //   });
 // }
 
+function payAmount(req, res, next) {
+  console.log("hai");
+  console.log(req.body, "kk");
+  let user_id = req.user.user_data.user_id;
+  User.findById(user_id).then((data) => {
+    if (req.body.paid_amount > data.amount) {
+      return res.status(404).json({
+        status: "success",
+        message: "The amount is higher than payable amount, please check",
+      });
+    }
+    const newAmount = {
+      paid_amount: req.body.paid_amount + data.paid_amount,
+      amount: data.amount - req.body.paid_amount,
+    };
+    User.findByIdAndUpdate(user_id, newAmount, (err, emp) => {
+      if (err) {
+        return res
+          .status(500)
+          .send({ error: "Problem with Updating the   Employee recored " });
+      }
+      res.send({ status: "success", message: "Updation successfull" });
+    });
+  });
+}
+
 module.exports = {
   signup,
   login,
@@ -271,4 +307,5 @@ module.exports = {
   getByAmt,
   filterByDate,
   users,
+  payAmount,
 };

@@ -6,6 +6,7 @@ const UserSchema = new Schema(
     email: { type: String, default: "", required: true },
     phone: { type: Number, default: "", required: true },
     amount: { type: Number },
+    paid_amount: { type: Number },
     date: { type: String },
     password: { type: String, required: true },
     access_token: { type: String, default: "" },

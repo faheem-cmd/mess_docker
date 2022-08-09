@@ -21,17 +21,17 @@ app.use(express.static(__dirname));
 router.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "/index.html"));
 });
-// mongoose(dbUrl);
-mongoose(`mongodb://0.0.0.0:27017/${dbName}`);
+mongoose(dbUrl);
+// mongoose(`mongodb://0.0.0.0:27017/${dbName}`);
 
-// mongoose.connect("mongodb://localhost/mess", { useNewUrlParser: true });
-// mongoose.connection
-//   .once("open", function () {
-//     console.log("Database connected Successfully");
-//   })
-//   .on("error", function (err) {
-//     console.log("Error", err);
-//   });
+mongoose.connect("mongodb://localhost/mess", { useNewUrlParser: true });
+mongoose.connection
+  .once("open", function () {
+    console.log("Database connected Successfully");
+  })
+  .on("error", function (err) {
+    console.log("Error", err);
+  });
 //Server
 
 const server = http.createServer(app);
@@ -55,18 +55,18 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(3001, () => {
-  console.log("SERVER IS RUNNING");
-});
-
-// app.listen(process.env.PORT, () => {
-//   success({
-//     message: `Successfully connected with the database \n${dbUrl}`,
-//     badge: true,
-//   });
-
-//   success({
-//     message: `Server is running on \n${process.env.PORT}`,
-//     badge: true,
-//   });
+// server.listen(3001, () => {
+//   console.log("SERVER IS RUNNING");
 // });
+
+server.listen(process.env.PORT, () => {
+  success({
+    message: `Successfully connected with the database \n${dbUrl}`,
+    badge: true,
+  });
+
+  success({
+    message: `Server is running on \n${process.env.PORT}`,
+    badge: true,
+  });
+});
